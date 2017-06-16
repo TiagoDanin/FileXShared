@@ -21,7 +21,7 @@ setup(
 	license = 'AGPLv3',
 	url = 'https://TiagoDanin.github.io/FileXShared/',
 	scripts=['FileXShared'],
-	install_requires=['Flask'],
+	requires=['Flask'],
 	classifiers = [
 		'Natural Language :: English',
 		'Operating System :: MacOS',
