@@ -1,12 +1,15 @@
 language: python
+env:
+    - TRAVIS-CL=True
 python:
-    - "3.2"
     - "3.3"
     - "3.4"
     - "3.5"
-    - "3.5-dev"
+    - "3.6"
+    - "3.7-dev"
 install:
     - python setup.py install
+    - pip install Flask-Testing
 script:
     - python FileXShared
 sudo: true

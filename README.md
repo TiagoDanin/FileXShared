@@ -4,7 +4,7 @@ Share files Fast and Easy, on your local network!
 ![Screenshots](https://raw.githubusercontent.com/TiagoDanin/FileXShared/master/Screenshots.png)
 
 ## Requires
-Written for Python3.x
+Written for Python3
 
 ## Install
 PIP: `sudo pip install FileXShared`
