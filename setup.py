@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # setup.py
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(
 	name='FileXShared',
