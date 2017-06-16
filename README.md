@@ -16,7 +16,7 @@ Manual Installation: `sudo python setup install`
 2. Open localhost:8054
 
 ## License
-GNUA Affero General Public License v3 [(AGPLv3)](https://github.com/TiagoDanin/FileXShared/blob/master/LICENSE)
+GNU Affero General Public License v3 [(AGPLv3)](https://github.com/TiagoDanin/FileXShared/blob/master/LICENSE)
 
 ---
 > By Tiago Danin
