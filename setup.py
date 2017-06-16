@@ -11,12 +11,17 @@ setup(
 	FileXShared
 	===========
 	Share files Fast and Easy, on your local network!
+
+	Run in Terminal
+	===============
+	$> FileXShared
 	''',
 	author = 'Tiago Danin',
 	author_email = 'TiagoDanin@outlook.com',
 	license = 'AGPLv3',
 	url = 'https://TiagoDanin.github.io/FileXShared/',
-	py_modules = [''],
+	scripts=['FileXShared'],
+	install_requires=['Flask'],
 	classifiers = [
 		'Natural Language :: English',
 		'Operating System :: MacOS',
