@@ -76,7 +76,7 @@ def index():
 
 app.add_url_rule('/', 'Index', index, methods=['GET'])
 app.add_url_rule('/', 'Index', index, methods=['POST'])
-if 'TRAVIS-CL' in os.environ:
+if 'TRAVISCL' in os.environ:
 	print('TRAVIS-CL OK')
 else:
 	app.run(host='0.0.0.0', port='8054', debug=False, threaded=True)

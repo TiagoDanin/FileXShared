@@ -1,6 +1,6 @@
 language: python
 env:
-    - TRAVIS-CL=True
+    - TRAVISCL=True
 python:
     - "3.3"
     - "3.4"
