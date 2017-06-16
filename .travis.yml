@@ -9,7 +9,6 @@ python:
     - "3.7-dev"
 install:
     - python setup.py install
-    - pip install Flask-Testing
 script:
     - python FileXShared
 sudo: true
