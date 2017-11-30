@@ -4,18 +4,23 @@ from flask import Flask, send_from_directory, make_response, request
 import os
 app = Flask(__name__)
 
+password = 'tiago'
+is_blocked = True
+
 def sendFile(directory, filename):
 	print('[+] Shared ', str(directory), '/', str(filename))
 	return send_from_directory(directory=directory, filename=filename, as_attachment=True)
 
 def index():
 	page = '<!-- FileXSHared By Tiago Danin -->'
+	page += '<!-- https://github.com/TiagoDanin/FileXShared  -->'
 	page += '''
 	<html>
 		<head>
 			<title>FileXShared</title>
 			<style type="text/css">
 				.btn {
+					margin: 1px;
 					font-family: Arial;
 					color: #000000;
 					font-size: 21px;
@@ -28,13 +33,8 @@ def index():
 				}
 
 				.btn:hover {
-					background: #ffffff;
+					background: #e67925;
 					border: solid #e67925 4px;
-					background-image: -webkit-linear-gradient(top, #ffffff, #ebebeb);
-					background-image: -moz-linear-gradient(top, #ffffff, #ebebeb);
-					background-image: -ms-linear-gradient(top, #ffffff, #ebebeb);
-					background-image: -o-linear-gradient(top, #ffffff, #ebebeb);
-					background-image: linear-gradient(to bottom, #ffffff, #ebebeb);
 					text-decoration: none;
 				}
 			</style>
@@ -46,13 +46,45 @@ def index():
 	get_file = request.form.get('file')
 	get_dir = os.getcwd()
 
-	page += '''
-				<button type="submit" class="btn" name="dir" id="id" value="{home}">Root Folder</button></div></br>
-	'''.format(home=get_dir)
 	if request.form.get('dir'):
 		get_dir = request.form.get('dir')
 
-	for path_name, dir_names, file_names in os.walk(str(get_dir)):
+	if is_blocked:
+		if request.cookies.get('password') == str(password):
+			print('[+] New login with password')
+		elif request.form.get('password') == str(password):
+			page += '''
+				Password: True
+				<button type="submit" class="btn" name="dir" id="id" value="{home}">Go Folder</button></div></br>
+			'''.format(home=get_dir)
+			page += '''
+			</form>
+		</body>
+	</html>
+	'''
+			p = make_response(page)
+			p.set_cookie('password', str(request.form.get('password')))
+			return p
+		else:
+			page += '''
+				Password: <input type='password' class='btn' name='password' id='password' />
+			'''
+			page += '''
+			</form>
+		</body>
+	</html>
+	'''
+			p = make_response(page)
+			if request.form.get('password'):
+				p.set_cookie('password', str(request.form.get('password')))
+			return p
+
+	page += '''
+				<button type="submit" class="btn" name="dir" id="id" value="{home}">Root Folder</button></div></br>
+	'''.format(home=get_dir)
+	print(get_dir)
+
+	for path_name, dir_names, file_names in os.walk(str(get_dir_current)):
 		for s in dir_names:
 			page += '''
 				<button type="submit" class="btn" name="dir" id="id" value="{path_name}/{s}">Folder {s}</button></div></br>
@@ -68,8 +100,8 @@ def index():
 	'''
 		if get_file:
 			for s in file_names:
-				print(s)
 				if s == get_file:
+					print('[+] Seeding ', str(path_name), str(get_file))
 					return sendFile(str(path_name), str(get_file))
 		else:
 			return make_response(page)
