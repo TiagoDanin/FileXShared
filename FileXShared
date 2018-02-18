@@ -111,4 +111,4 @@ app.add_url_rule('/', 'Index', index, methods=['POST'])
 if 'TRAVISCL' in os.environ:
 	print('TRAVIS-CL OK')
 else:
-	app.run(host='0.0.0.0', port='8054', debug=False, threaded=True)
+	app.run(host='0.0.0.0', port=8054, debug=False, threaded=True)
