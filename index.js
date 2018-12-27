@@ -9,9 +9,13 @@ const bodyParser = require('body-parser')
 var app = express()
 
 const dirRoot = './test/'
+var lastFolders = []
 
 const getDir = (dir) => {
-	return fs.readdirSync(`${dirRoot}${dir}`)
+	if (fs.existsSync(`${dirRoot}${dir}`)) {
+		return fs.readdirSync(`${dirRoot}${dir}`)
+	}
+	return []
 }
 
 const getDirFiles = (dir) => {
@@ -26,8 +30,23 @@ const getDirFiles = (dir) => {
 			data.files.push(`${dir}${file}`)
 		}
 	}
+
 	data.files.sort()
 	data.dir.sort()
+
+	if (data.files.length <= 0 && data.dir.length <= 0) {
+		return false
+	}
+
+	data.files = data.files.map((name) => {
+		var f = {}
+		f.name = name != '' ? name.replace(dir, '') : name
+		f.type = mime.getType(path.basename(name))
+		f.video = f.type.startsWith('video/') ? {file: name, type: f.type} : false
+		f.audio = f.type.startsWith('audio/') ? {file: name, type: f.type} : false
+		f.image = f.type.startsWith('image/') ? name : false
+		return f
+	})
 	return data
 }
 
@@ -53,21 +72,58 @@ app.set('view engine', 'handlebars')
 app.use('/uikit', express.static(`${__dirname}/node_modules/uikit/dist/`))
 app.use('/css', express.static(`${__dirname}/css/`))
 app.use('/static', express.static(dirRoot))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/close', (req, res) => {
-	//TODO
-	return res.render('files')
+app.get('/close', async (req, res) => {
+	res.render('alert', {
+		lastFolders: lastFolders,
+		text: 'Shutdown Server...'
+	})
+	await new Promise((resolve) => setTimeout(
+		resolve,
+		(5000) //5s
+	))
+	return process.exit()
 })
 
 app.get('/singout', (req, res) => {
 	//TODO
-	return res.render('files')
+	return res.render('alert', {
+		lastFolders: lastFolders,
+		text: 'Sing Out and removing password of FileXShared.'
+	})
 })
 
-app.get(['/files/:dir', '/', '/files'], (req, res) => {
-	console.log(req.params.dir)
-	return res.render('files')
+app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
+	var dir = ''
+	if (req.params.dir) {
+		dir = `${req.params.dir}/`
+	} else if (req.originalUrl.startsWith('/files/')) {
+		dir = `${req.originalUrl.replace('/files/', '')}/`
+	}
+
+	if (dir != '') {
+		if (lastFolders.length >= 3) {
+			lastFolders = [...lastFolders.splice(1, 3), dir.replace()]
+		} else {
+			lastFolders.push(dir.replace())
+		}
+	}
+
+	console.log(req.originalUrl)
+	var data = getDirFiles(dir)
+	if (!data) {
+		return res.render('alert', {
+			lastFolders: lastFolders,
+			text: 'No has files or folders!.'
+		})
+	}
+
+	return res.render('files', {
+		upload: true,
+		lastFolders: lastFolders,
+		...data
+	})
 })
 
 app.post('/download', (req, res) => {
