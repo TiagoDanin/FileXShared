@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "4.16.4",
+    "express-handlebars": "3.0.0",
+    "filenamify": "2.1.0",
+    "mime": "2.4.0",
+    "uikit": "3.0.0-rc.25"
   }
 }
