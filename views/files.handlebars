@@ -1,26 +1,52 @@
-<div class="card uk-card uk-card-default uk-card-body">
-	<div uk-grid>
-		<div class="uk-width-expand">
-			<p class="uk-card-title uk-margin-remove">{{name}}</p>
-		</div>
-		<div class="uk-width-auto uk-margin-remove">
-			<p class="uk-card-title uk-margin-remove uk-align-right">
-				<a href="#" class="uk-button uk-button-default uk-button-text">Static</a>
-				<a href="#" class="uk-button uk-button-default uk-button-text">Download</a>
-				{{#video}}
-					<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Play</a>
-					<video controls playsinline hidden uk-video>
-						<source src="/static/{{file}}" type="{{type}}">
-					</video>
-				{{/video}}
-				{{#audio}}
-					<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Play</a>
-					<audio controls hidden>
-			 			<source src="/static/{{file}}" type="{{type}}">
-					</audio>
-				{{/audio}}
-				<a href="#" class="uk-label">{{type}}</a>
-			</p>
-		</div>
+{{#dir}}
+	<div class="card uk-card uk-card-default uk-card-body">
+		<form action="/download" method="post">
+			<div uk-grid>
+				<div class="uk-width-expand">
+					<p class="uk-card-title uk-margin-remove">{{.}}</p>
+				</div>
+				<div class="uk-width-auto uk-margin-remove">
+					<p class="uk-card-title uk-margin-remove uk-align-right">
+						<a href="/files/{{.}}" class="uk-button uk-button-default uk-button-text">Open</a>
+						<a href="#" class="label-folder uk-label">folder</a>
+					</p>
+				</div>
+			</div>
+		</form>
 	</div>
-</div>
+{{/dir}}
+
+{{#files}}
+	<div class="card uk-card uk-card-default uk-card-body">
+		<form action="/download" method="post">
+			<div uk-grid>
+				<div class="uk-width-expand">
+					<p class="uk-card-title uk-margin-remove">{{name}}</p>
+				</div>
+				<div class="uk-width-auto uk-margin-remove">
+					<p class="uk-card-title uk-margin-remove uk-align-right">
+						<a href="#" class="uk-button uk-button-default uk-button-text">Static</a>
+						<button class="uk-button uk-button-default uk-button-text" type="submit" name="file" value="{{file}}">Download</button>
+						{{#video}}
+							<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Preview</a>
+							<video controls playsinline hidden uk-video>
+								<source src="/static/{{file}}" type="{{type}}">
+							</video>
+						{{/video}}
+						{{#audio}}
+							<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Preview</a>
+							<audio controls hidden>
+								<source src="/static/{{file}}" type="{{type}}">
+							</audio>
+						{{/audio}}
+						{{#image}}
+							<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Preview</a>
+							<img hidden data-src="/static/{{.}}" width="100%" alt="" uk-img>
+						{{/image}}
+						<a href="#" class="uk-label">{{type}}</a>
+					</p>
+				</div>
+			</div>
+		</form>
+	</div>
+{{/files}}
