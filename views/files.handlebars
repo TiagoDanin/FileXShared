@@ -1,1 +1,26 @@
-<h1>Example App: Home</h1>
+<div class="card uk-card uk-card-default uk-card-body">
+	<div uk-grid>
+		<div class="uk-width-expand">
+			<p class="uk-card-title uk-margin-remove">{{name}}</p>
+		</div>
+		<div class="uk-width-auto uk-margin-remove">
+			<p class="uk-card-title uk-margin-remove uk-align-right">
+				<a href="#" class="uk-button uk-button-default uk-button-text">Static</a>
+				<a href="#" class="uk-button uk-button-default uk-button-text">Download</a>
+				{{#video}}
+					<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Play</a>
+					<video controls playsinline hidden uk-video>
+						<source src="/static/{{file}}" type="{{type}}">
+					</video>
+				{{/video}}
+				{{#audio}}
+					<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Play</a>
+					<audio controls hidden>
+			 			<source src="/static/{{file}}" type="{{type}}">
+					</audio>
+				{{/audio}}
+				<a href="#" class="uk-label">{{type}}</a>
+			</p>
+		</div>
+	</div>
+</div>
