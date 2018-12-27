@@ -4,6 +4,7 @@ const mime = require('mime')
 const express = require('express')
 const exphbs  = require('express-handlebars')
 const filenamify = require('filenamify')
+const bodyParser = require('body-parser')
 
 var app = express()
 
@@ -39,28 +40,47 @@ const optionsSend = (file) => {
 			'Content-disposition': `attachment; filename=${
 				filenamify(path.basename(file), {replacement: '-'})
 			}`,
-			'Content-type': mime.getType(file)
+			'Content-type': mime.getType(path.basename(file))
 		}
 	}
 }
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
+app.set('port', process.env.PORT || 3000)
 app.set('view engine', 'handlebars')
 //app.enable('view cache')
 
 app.use('/uikit', express.static(`${__dirname}/node_modules/uikit/dist/`))
-app.use('/files', express.static(dirRoot))
+app.use('/css', express.static(`${__dirname}/css/`))
+app.use('/static', express.static(dirRoot))
+app.use(bodyParser.json())
 
-app.get('/', function (req, res) {
-	res.sendFile('a.mp3', optionsSend('a.mp3'), function (err) {
+app.get('/close', (req, res) => {
+	//TODO
+	return res.render('files')
+})
+
+app.get('/singout', (req, res) => {
+	//TODO
+	return res.render('files')
+})
+
+app.get(['/files/:dir', '/', '/files'], (req, res) => {
+	console.log(req.params.dir)
+	return res.render('files')
+})
+
+app.post('/download', (req, res) => {
+	var file = req.body.file
+	return res.sendFile(file, optionsSend(file), (err) => {
 		if (err) {
 			console.log(err)
 		} else {
 			console.log('Sent!')
 		}
 	})
-	//res.render('files')
 })
 
-console.log('Done!')
-app.listen(3000)
+app.listen(app.get('port'), () => {
+	console.log(`Open in you browser: http://localhost:${app.get('port')} or YOU_IP:${app.get('port')}`)
+})
