@@ -3,11 +3,13 @@ const path = require('path')
 const mime = require('mime')
 const express = require('express')
 const exphbs  = require('express-handlebars')
+const cookieSession = require('cookie-session')
 const filenamify = require('filenamify')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 
 const dirRoot = './test/'
+const password = '12345'
 var lastFolders = []
 
 const clearNameFile = (name) => {
@@ -45,7 +47,7 @@ const getDirFiles = (dir) => {
 		var f = {}
 		f.name = name != '' ? name.replace(dir, '') : name
 		f.file = name
-		f.type = mime.getType(path.basename(name))
+		f.type = mime.getType(path.basename(name)) || 'none'
 		f.video = f.type.startsWith('video/') ? {file: name, type: f.type} : false
 		f.audio = f.type.startsWith('audio/') ? {file: name, type: f.type} : false
 		f.image = f.type.startsWith('image/') ? name : false
@@ -61,9 +63,18 @@ const optionsSend = (file) => {
 		headers: {
 			'x-timestamp': Date.now(),
 			'Content-disposition': `attachment; filename=${clearNameFile(file)}`,
-			'Content-type': mime.getType(path.basename(file))
+			'Content-type': mime.getType(path.basename(file)) || ''
 		}
 	}
+}
+
+const checkPassword = (req, res) => {
+	const passwordInput = req.session.password
+	if (passwordInput != password) {
+		res.redirect('/login')
+		return false
+	}
+	return true
 }
 
 const app = express()
@@ -72,7 +83,6 @@ const storage = multer.diskStorage({
 		cb(null, `${dirRoot}uploads/`)
 	},
 	filename: (req, file, cb) => {
-		console.log(file)
 		cb(null, `${clearNameFile(file.originalname)}`)
 	}
 })
@@ -81,16 +91,33 @@ const upload = multer({ storage: storage })
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('port', process.env.PORT || 3000)
 app.set('view engine', 'handlebars')
+app.set('trust proxy', 1)
+app.use(cookieSession({
+	name: 'session',
+	keys: ['FileXShared', 'filexshared']
+}))
 //app.enable('view cache')
 
+app.use((req, res, next) => {
+	if (
+		req.path != '/login' &&
+		!(req.path.startsWith('/css') || req.path.startsWith('/uikit')) &&
+		!checkPassword(req, res)
+	) {
+		console.log('[!] Open page of login')
+		return res.redirect('/login')
+	}
+	return next()
+})
 app.use('/uikit', express.static(`${__dirname}/node_modules/uikit/dist/`))
 app.use('/css', express.static(`${__dirname}/css/`))
-app.use('/static', express.static(dirRoot))
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/static', express.static(dirRoot))
 
 app.get(['/about', '/faq', '/help'], async (req, res) => {
+	console.log('[!] Open help')
 	return res.render('help', {
-		lastFolders: lastFolders,
+		lastFolders: req.session.lastFolders,
 		list: [{
 			title: 'Enable Upload',
 			tags: ['Server', 'Client'],
@@ -120,8 +147,9 @@ app.get(['/about', '/faq', '/help'], async (req, res) => {
 })
 
 app.get('/close', async (req, res) => {
+	console.log('[!] Shutdown Server...')
 	res.render('alert', {
-		lastFolders: lastFolders,
+		lastFolders: req.session.lastFolders,
 		text: 'Shutdown Server...'
 	})
 	await new Promise((resolve) => setTimeout(
@@ -131,11 +159,19 @@ app.get('/close', async (req, res) => {
 	return process.exit()
 })
 
+app.get('/login', (req, res) => {
+	console.log('[!] Login user')
+	return res.render('login', {
+		lastFolders: req.session.lastFolders
+	})
+})
+
 app.get('/singout', (req, res) => {
-	//TODO
-	return res.render('alert', {
-		lastFolders: lastFolders,
-		text: 'Sing Out and removing password of FileXShared.'
+	console.log('[!] Sing out user')
+	req.session.password = ''
+	return res.render('singout', {
+		lastFolders: req.session.lastFolders,
+		text: 'Sing Out and removing password of browser.'
 	})
 })
 
@@ -147,49 +183,65 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 		dir = `${req.originalUrl.replace('/files/', '')}/`
 	}
 	dir = decodeURIComponent(dir)
+	console.log(`[!] Open Folder: ${dir}`)
 
 	if (dir != '') {
+		if (lastFolders.length <= 0) {
+			lastFolders = req.session.lastFolders || []
+		}
 		if (lastFolders.length >= 3) {
 			lastFolders = [...lastFolders.splice(1, 3), dir.replace()]
 		} else {
 			lastFolders.push(dir.replace())
 		}
+		req.session.lastFolders = lastFolders
 	}
-
-	console.log(req.originalUrl)
 	var data = getDirFiles(dir)
 	if (!data) {
 		return res.render('alert', {
-			lastFolders: lastFolders,
+			lastFolders: req.session.lastFolders,
 			text: 'No has files or folders!.'
 		})
 	}
 
 	return res.render('files', {
 		upload: true,
-		lastFolders: lastFolders,
+		lastFolders: req.session.lastFolders,
 		...data
 	})
 })
 
+app.post('/login', (req, res) => {
+	const passwordInput = req.body.password || ''
+	req.session.password = passwordInput
+	if (checkPassword(req, res)) {
+		return res.redirect('/files')
+	}
+	return res.redirect('/login')
+})
+
 app.post('/download', (req, res) => {
-	var file = req.body.file
+	const file = req.body.file
 	if (!file) {
 		return res.send("Falid!")
 	}
 	return res.sendFile(file, optionsSend(file), (err) => {
 		if (err) {
-			console.log(err)
+			console.log(`[-] Error: ${err}`)
 		} else {
-			console.log('Sent!')
+			console.log(`[+] Send file: ${file}`)
 		}
 	})
 })
 
 app.post('/upload', upload.any(), (req, res) => {
+	req.files.map((e) => {
+		console.log(`[+] Receive: ${e.originalname}`)
+	})
 	return res.send('Done!')
 })
 
 app.listen(app.get('port'), () => {
-	console.log(`Open in you browser: http://localhost:${app.get('port')} or YOU_IP:${app.get('port')}`)
+	console.log(`[!] Open browser: http://localhost:${app.get('port')} or YOU_IP:${app.get('port')}`)
+	console.log('[!] Help in http://URL_FILEXSHARED/help')
 })
