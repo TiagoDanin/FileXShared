@@ -27,8 +27,10 @@
 					{{#lastFolders}}
 						<li><a href="/files/{{.}}"><span class="uk-margin-small-right" uk-icon="icon: table"></span> {{.}}</a></li>
 					{{/lastFolders}}
-					<li class="uk-nav-divider"></li>
-					<li><a href="/close"><span class="uk-margin-small-right" uk-icon="icon: close"></span> Close Server</a></li>
+					{{#enableClose}}
+						<li class="uk-nav-divider"></li>
+						<li><a href="/close"><span class="uk-margin-small-right" uk-icon="icon: close"></span> Close Server</a></li>
+					{{/enableClose}}
 					<li><a href="/singout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Sign Out</a></li>
 					<li class="uk-nav-divider"></li>
 					<div class="js-upload upload uk-text-center">
