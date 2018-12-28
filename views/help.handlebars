@@ -1,0 +1,17 @@
+{{#list}}
+	<article class="uk-comment uk-comment-primary">
+		<header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+			<div class="uk-width-expand">
+				<h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{title}}</a></h4>
+				<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+					{{#tags}}
+						<li><a href="#">{{.}}</a></li>
+					{{/tags}}
+				</ul>
+			</div>
+		</header>
+		<div class="uk-comment-body">
+			<p>{{text}}</p>
+		</div>
+	</article>
+{{/list}}

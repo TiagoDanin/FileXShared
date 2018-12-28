@@ -88,6 +88,37 @@ app.use('/css', express.static(`${__dirname}/css/`))
 app.use('/static', express.static(dirRoot))
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.get(['/about', '/faq', '/help'], async (req, res) => {
+	return res.render('help', {
+		lastFolders: lastFolders,
+		list: [{
+			title: 'Enable Upload',
+			tags: ['Server', 'Client'],
+			text: 'Create a folder with the name "uploads". (Need reload server)'
+		}, {
+			title: 'Enable Password',
+			tags: ['Server'],
+			text: 'Start with the command "filexshared --password=012345"'
+		}, {
+			title: 'Disable Option "Close Server"',
+			tags: ['Server'],
+			text: 'Start with the command "filexshared --close=false"'
+		}, {
+			title: 'Sign Out',
+			tags: ['Client'],
+			text: 'Delete password of browser (Salved with cookies)'
+		}, {
+			title: 'About',
+			tags: ['Info'],
+			text: 'FileXShared is developed by Tiago Danin (https://tiagodanin.github.io)'
+		}, {
+			title: 'Framework info',
+			tags: ['Info'],
+			text: 'FileXShared use Express, Handlebars, UiKit...'
+		}]
+	})
+})
+
 app.get('/close', async (req, res) => {
 	res.render('alert', {
 		lastFolders: lastFolders,

@@ -23,7 +23,6 @@
 	font-weight: bold;
 }
 
-
 .uk-width-expand {
 	min-width: 50%;
 }
@@ -32,6 +31,11 @@
 	.uk-width-expand\@s {
 		padding: 5!important;
 	}
+}
+
+.uk-comment-primary {
+	background-color: #ececec;
+	margin: 5;
 }
 
 .uk-link:hover, a:hover {
