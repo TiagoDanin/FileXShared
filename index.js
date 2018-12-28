@@ -5,11 +5,14 @@ const express = require('express')
 const exphbs  = require('express-handlebars')
 const filenamify = require('filenamify')
 const bodyParser = require('body-parser')
-
-var app = express()
+const multer = require('multer')
 
 const dirRoot = './test/'
 var lastFolders = []
+
+const clearNameFile = (name) => {
+	return filenamify(path.basename(name), {replacement: '-'})
+}
 
 const getDir = (dir) => {
 	if (fs.existsSync(`${dirRoot}${dir}`)) {
@@ -41,6 +44,7 @@ const getDirFiles = (dir) => {
 	data.files = data.files.map((name) => {
 		var f = {}
 		f.name = name != '' ? name.replace(dir, '') : name
+		f.file = name
 		f.type = mime.getType(path.basename(name))
 		f.video = f.type.startsWith('video/') ? {file: name, type: f.type} : false
 		f.audio = f.type.startsWith('audio/') ? {file: name, type: f.type} : false
@@ -56,13 +60,23 @@ const optionsSend = (file) => {
 		dotfiles: 'deny',
 		headers: {
 			'x-timestamp': Date.now(),
-			'Content-disposition': `attachment; filename=${
-				filenamify(path.basename(file), {replacement: '-'})
-			}`,
+			'Content-disposition': `attachment; filename=${clearNameFile(file)}`,
 			'Content-type': mime.getType(path.basename(file))
 		}
 	}
 }
+
+const app = express()
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, `${dirRoot}uploads/`)
+	},
+	filename: (req, file, cb) => {
+		console.log(file)
+		cb(null, `${clearNameFile(file.originalname)}`)
+	}
+})
+const upload = multer({ storage: storage })
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('port', process.env.PORT || 3000)
@@ -101,6 +115,7 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 	} else if (req.originalUrl.startsWith('/files/')) {
 		dir = `${req.originalUrl.replace('/files/', '')}/`
 	}
+	dir = decodeURIComponent(dir)
 
 	if (dir != '') {
 		if (lastFolders.length >= 3) {
@@ -128,6 +143,9 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 
 app.post('/download', (req, res) => {
 	var file = req.body.file
+	if (!file) {
+		return res.send("Falid!")
+	}
 	return res.sendFile(file, optionsSend(file), (err) => {
 		if (err) {
 			console.log(err)
@@ -135,6 +153,10 @@ app.post('/download', (req, res) => {
 			console.log('Sent!')
 		}
 	})
+})
+
+app.post('/upload', upload.any(), (req, res) => {
+	return res.send('Done!')
 })
 
 app.listen(app.get('port'), () => {
