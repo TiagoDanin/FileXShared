@@ -13,30 +13,71 @@
 <body>
 
 	<div uk-grid>
-		<div class="uk-width-1-4">
+		<div class="uk-width-1-4@s">
 			<div class="menu uk-card uk-card-default uk-card-body">
-			<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-				<li class="uk-parent">
-					<a href="#" class="title" style="color: #da1d5d;"><span uk-icon="icon: folder"></span> FileXShared</a>
-					<ul class="uk-nav-sub">
-						<li><a href="https://github.com/TiagoDanin/FileXShared"><span uk-icon="icon: github"></span> GitHub</a></li>
-						<li><a href="https://tiagodanin.github.io"><span uk-icon="icon: link"></span> By Tiago Danin</a></li>
-					</ul>
-				</li>
-				<li><a href="/files"><span class="uk-margin-small-right" uk-icon="icon: table"></span> Root</a></li>
-				{{#lastFolders}}
-					<li><a href="/files/{{.}}"><span class="uk-margin-small-right" uk-icon="icon: table"></span> {{.}}</a></li>
-				{{/lastFolders}}
-				<li class="uk-nav-divider"></li>
-				<li><a href="/close"><span class="uk-margin-small-right" uk-icon="icon: close"></span> Close Server</a></li>
-				<li><a href="/singout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Sign Out</a></li>
-			</ul>
+				<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+					<li class="uk-parent">
+						<a href="#" class="title" style="color: #da1d5d;"><span uk-icon="icon: folder"></span> FileXShared</a>
+						<ul class="uk-nav-sub">
+							<li><a href="https://github.com/TiagoDanin/FileXShared"><span uk-icon="icon: github"></span> GitHub</a></li>
+							<li><a href="https://tiagodanin.github.io"><span uk-icon="icon: link"></span> By Tiago Danin</a></li>
+						</ul>
+					</li>
+					<li><a href="/files"><span class="uk-margin-small-right" uk-icon="icon: table"></span> Root</a></li>
+					{{#lastFolders}}
+						<li><a href="/files/{{.}}"><span class="uk-margin-small-right" uk-icon="icon: table"></span> {{.}}</a></li>
+					{{/lastFolders}}
+					<li class="uk-nav-divider"></li>
+					<li><a href="/close"><span class="uk-margin-small-right" uk-icon="icon: close"></span> Close Server</a></li>
+					<li><a href="/singout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Sign Out</a></li>
+					<li class="uk-nav-divider"></li>
+					<div class="js-upload upload uk-text-center">
+						<span uk-icon="icon: cloud-upload"></span>
+						<span class="uk-text-middle">Attach binaries by dropping them here or</span>
+						<div uk-form-custom>
+							<input type="file" multiple>
+							<span class="uk-link">selecting one</span>
+						</div>
+					</div>
+					<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+				</ul>
+			</div>
 		</div>
-		</div>
-		<div class="uk-width-expand padding-body">
+		<div class="uk-width-expand@s">
 			{{{body}}}
 		</div>
 	</div>
+
+	<script>
+		var bar = document.getElementById('js-progressbar')
+		UIkit.upload('.js-upload', {
+			url: '/upload',
+			multiple: true,
+			loadStart: (e) => {
+				bar.removeAttribute('hidden')
+				bar.max = e.total
+				bar.value = e.loaded
+			},
+			progress: (e) => {
+				bar.max = e.total
+				bar.value = e.loaded
+			},
+			loadEnd: (e) => {
+				bar.max = e.total
+				bar.value = e.loaded
+			},
+			completeAll: () => {
+				UIkit.tooltip(bar, {
+					title: 'Upload Completed',
+					delay: 200
+				}).show()
+				setTimeout(() => {
+					bar.setAttribute('hidden', 'hidden')
+				}, 2000)
+			}
+
+		});
+	</script>
 
 </body>
 

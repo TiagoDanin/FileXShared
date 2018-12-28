@@ -1,5 +1,5 @@
 .menu {
-	height: 100%;
+	margin-bottom: 20px;
 }
 
 .label-folder {
@@ -12,14 +12,26 @@
 	border-radius: 7px;
 }
 
+.upload {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
 .title {
 	font-size: 100%;
 	font-style: inherit;
 	font-weight: bold;
 }
 
-.padding-body {
-	padding: 5!important;
+
+.uk-width-expand {
+	min-width: 50%;
+}
+
+@media (min-width: 640px) {
+	.uk-width-expand\@s {
+		padding: 5!important;
+	}
 }
 
 .uk-link:hover, a:hover {
