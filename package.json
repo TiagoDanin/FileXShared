@@ -11,17 +11,20 @@
   "license": "MIT",
   "keywords": [
     "file",
-	"shared",
-	"share",
-	"web",
-	"browser",
-	"chrome",
-	"play",
-	"server",
-	"network"
+    "shared",
+    "share",
+    "web",
+    "browser",
+    "chrome",
+    "play",
+    "server",
+    "network"
   ],
   "scripts": {},
   "private": false,
+  "repository": "https://github.com/TiagoDanin/FileXShared.git",
+  "homepage": "https://TiagoDanin.github.io/FileXShared",
+  "bugs": "https://github.com/TiagoDanin/FileXShared/issues",
   "github": {
     "name": "FileXShared",
     "owner": "TiagoDanin"
@@ -29,8 +32,10 @@
   "files": [
     "LICENSE",
     "README.md",
+    "css",
     "index.js",
-    "package.json"
+    "package.json",
+    "views"
   ],
   "devDependencies": {},
   "dependencies": {
