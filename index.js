@@ -111,16 +111,20 @@ const upload = multer({
 })
 
 app.engine('handlebars', exphbs({
-	defaultLayout: 'main'
+	defaultLayout: 'main',
+	partialsDir: path.join(__dirname, 'views/partials'),
+	layoutsDir: path.join(__dirname, 'views/layouts')
 }))
 app.set('port', port)
+app.set('views', path.join(__dirname,'views'))
 app.set('view engine', 'handlebars')
 app.set('trust proxy', 1)
+
 app.use(cookieSession({
 		name: 'session',
 		keys: ['FileXShared', 'filexshared']
 	}))
-	//app.enable('view cache')
+app.enable('view cache')
 
 app.use((req, res, next) => {
 	//console.log(`[:]Path: ${req.path}`)
@@ -222,7 +226,7 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 		dir = `${req.originalUrl.replace('/files/', '')}/`
 	}
 	dir = decodeURIComponent(dir)
-	console.log(`[!] Open Folder: ${dir}`)
+	console.log(`[!] Open Folder: ${dir == '' ? 'root' : dir}`)
 
 	if (dir != '') {
 		if (lastFolders.length <= 0) {
