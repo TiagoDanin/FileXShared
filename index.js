@@ -36,6 +36,13 @@ const getDir = (dir) => {
 	return []
 }
 
+const loadFile = (file) => {
+	if (fs.existsSync(file)) {
+		return fs.readFileSync(file).toString()
+	}
+	return false
+}
+
 const markdwonToHtml = async(file) => {
 	if (fs.existsSync(file)) {
 		return await hubdown(
@@ -83,6 +90,7 @@ const getDirFiles = async(dir) => {
 		} : false
 		f.image = f.type.startsWith('image/') ? name : false
 		f.markdown = f.type == 'text/markdown' ? await markdwonToHtml(f.name) : false
+		f.text = (f.type.startsWith('text/') && f.type != 'text/markdown') ? loadFile(f.name) : false
 		return f
 	}))
 

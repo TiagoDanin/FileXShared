@@ -44,6 +44,9 @@
 						{{#markdown}}
 							<a class="uk-button uk-button-default uk-button-text">Preview</a>
 						{{/markdown}}
+						{{#text}}
+							<a class="uk-button uk-button-default uk-button-text">Preview</a>
+						{{/text}}
 							<a href="#" class="uk-label">{{type}}</a>
 						{{#markdown}}
 							<div uk-drop="mode: click; pos: bottom-justify; animation: uk-animation-slide-top-small; duration: 800">
@@ -52,6 +55,13 @@
 								</div>
 							</div>
 						{{/markdown}}
+						{{#text}}
+							<div uk-drop="mode: click; pos: bottom-justify; animation: uk-animation-slide-top-small; duration: 800">
+								<div class="uk-card uk-card-body uk-card-default">
+									{{.}}
+								</div>
+							</div>
+						{{/text}}
 					</p>
 				</div>
 			</div>
