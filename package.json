@@ -1,7 +1,7 @@
 {
   "name": "filexshared",
   "main": "index.js",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Share files Fast, Easy and Secure, to world or on your local network.",
   "author": {
     "name": "Tiago Danin",
@@ -43,6 +43,7 @@
     "express": "4.16.4",
     "express-handlebars": "3.0.0",
     "filenamify": "2.1.0",
+    "hubdown": "2.1.0",
     "mime": "2.4.0",
     "minimist": "1.2.0",
     "multer": "1.4.1",

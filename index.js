@@ -3,12 +3,13 @@
 const fs = require('fs')
 const path = require('path')
 const mime = require('mime')
+const multer = require('multer')
 const express = require('express')
-const exphbs = require('express-handlebars')
-const cookieSession = require('cookie-session')
+const hubdown = require('hubdown')
 const filenamify = require('filenamify')
 const bodyParser = require('body-parser')
-const multer = require('multer')
+const exphbs = require('express-handlebars')
+const cookieSession = require('cookie-session')
 const argv = require('minimist')(process.argv)
 
 if (argv.help) {
@@ -18,6 +19,7 @@ if (argv.help) {
 const dirRoot = `${process.cwd()}/`
 const password = argv.password || ''
 const enableClose = !(argv.close || false)
+const enableUpload = fs.existsSync(`${dirRoot}/uploads`)
 const port = argv.port || process.env.PORT || process.env.port || 3000
 var lastFolders = []
 
@@ -34,19 +36,31 @@ const getDir = (dir) => {
 	return []
 }
 
-const getDirFiles = (dir) => {
-	var data = {
+const markdwonToHtml = async(file) => {
+	if (fs.existsSync(file)) {
+		return await hubdown(
+				fs.readFileSync(file).toString()
+			)
+			.then((res) => res.content)
+			.catch(() => false)
+	}
+	return false
+}
+
+const getDirFiles = async(dir) => {
+	let data = {
 		files: [],
 		dir: []
 	}
-	for (file of getDir(dir)) {
+	let dirs = getDir(dir)
+
+	dirs.map((file) => {
 		if (fs.statSync(`${dirRoot}${dir}${file}`).isDirectory()) {
 			data.dir.push(`${dir}${file}`)
 		} else {
 			data.files.push(`${dir}${file}`)
 		}
-	}
-
+	})
 	data.files.sort()
 	data.dir.sort()
 
@@ -54,7 +68,7 @@ const getDirFiles = (dir) => {
 		return false
 	}
 
-	data.files = data.files.map((name) => {
+	data.files = await Promise.all(data.files.map(async(name) => {
 		var f = {}
 		f.name = name != '' ? name.replace(dir, '') : name
 		f.file = name
@@ -68,8 +82,10 @@ const getDirFiles = (dir) => {
 			type: f.type
 		} : false
 		f.image = f.type.startsWith('image/') ? name : false
+		f.markdown = f.type == 'text/markdown' ? await markdwonToHtml(f.name) : false
 		return f
-	})
+	}))
+
 	return data
 }
 
@@ -116,7 +132,7 @@ app.engine('handlebars', exphbs({
 	layoutsDir: path.join(__dirname, 'views/layouts')
 }))
 app.set('port', port)
-app.set('views', path.join(__dirname,'views'))
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'handlebars')
 app.set('trust proxy', 1)
 
@@ -124,7 +140,7 @@ app.use(cookieSession({
 		name: 'session',
 		keys: ['FileXShared', 'filexshared']
 	}))
-app.enable('view cache')
+	//app.enable('view cache')
 
 app.use((req, res, next) => {
 	//console.log(`[:]Path: ${req.path}`)
@@ -149,6 +165,7 @@ app.get(['/about', '/faq', '/help'], async(req, res) => {
 	console.log('[!] Open help')
 	return res.render('help', {
 		lastFolders: req.session.lastFolders,
+		enableUpload: enableUpload,
 		enableClose: enableClose,
 		list: [{
 			title: 'Enable Upload',
@@ -182,6 +199,7 @@ app.get('/close', async(req, res) => {
 	if (!enableClose) {
 		return res.render('alert', {
 			lastFolders: req.session.lastFolders,
+			enableUpload: enableUpload,
 			enableClose: enableClose,
 			text: 'Disable!'
 		})
@@ -189,6 +207,7 @@ app.get('/close', async(req, res) => {
 	console.log('[!] Shutdown Server...')
 	res.render('alert', {
 		lastFolders: req.session.lastFolders,
+		enableUpload: enableUpload,
 		enableClose: enableClose,
 		text: 'Shutdown Server...'
 	})
@@ -203,6 +222,7 @@ app.get('/login', (req, res) => {
 	console.log('[!] Login user')
 	return res.render('login', {
 		lastFolders: req.session.lastFolders,
+		enableUpload: enableUpload,
 		enableClose: enableClose
 	})
 })
@@ -213,12 +233,13 @@ app.get('/singout', (req, res) => {
 	req.session.lastFolders = []
 	return res.render('singout', {
 		lastFolders: req.session.lastFolders,
+		enableUpload: enableUpload,
 		enableClose: enableClose,
 		text: 'Removing database...'
 	})
 })
 
-app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
+app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async(req, res) => {
 	var dir = ''
 	if (req.params.dir) {
 		dir = `${req.params.dir}/`
@@ -239,10 +260,11 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 		}
 		req.session.lastFolders = lastFolders
 	}
-	var data = getDirFiles(dir)
+	var data = await getDirFiles(dir)
 	if (!data) {
 		return res.render('alert', {
 			lastFolders: req.session.lastFolders,
+			enableUpload: enableUpload,
 			enableClose: enableClose,
 			text: 'No has files or folders!.'
 		})
@@ -251,6 +273,7 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], (req, res) => {
 	return res.render('files', {
 		upload: true,
 		lastFolders: req.session.lastFolders,
+		enableUpload: enableUpload,
 		enableClose: enableClose,
 		...data
 	})
@@ -280,6 +303,9 @@ app.post('/download', (req, res) => {
 })
 
 app.post('/upload', upload.any(), (req, res) => {
+	if (!enableUpload) {
+		return res.send('Upload disabled!')
+	}
 	req.files.map((e) => {
 		console.log(`[+] Receive: ${e.originalname}`)
 	})

@@ -33,15 +33,17 @@
 						<li><a href="/close"><span class="uk-margin-small-right" uk-icon="icon: close"></span> Close Server</a></li>
 					{{/enableClose}}
 					<li><a href="/singout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Sign Out</a></li>
-					<li class="uk-nav-divider"></li>
-					<div class="js-upload upload uk-text-center">
-						<span uk-icon="icon: cloud-upload"></span>
-						<span class="uk-text-middle">Attach file by dropping them here or</span>
-						<div uk-form-custom>
-							<input type="file" multiple>
-							<span class="uk-link">selecting one</span>
+					{{#enableUpload}}
+						<li class="uk-nav-divider"></li>
+						<div class="js-upload upload uk-text-center">
+							<span uk-icon="icon: cloud-upload"></span>
+							<span class="uk-text-middle">Attach file by dropping them here or</span>
+							<div uk-form-custom>
+								<input type="file" multiple>
+								<span class="uk-link">selecting one</span>
+							</div>
 						</div>
-					</div>
+					{{/enableUpload}}
 					<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
 				</ul>
 			</div>

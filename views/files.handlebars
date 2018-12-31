@@ -41,7 +41,17 @@
 							<a href="#" class="uk-button uk-button-default uk-button-text" uk-toggle="target: +">Preview</a>
 							<img hidden data-src="/static/{{.}}" width="100%" alt="" uk-img>
 						{{/image}}
-						<a href="#" class="uk-label">{{type}}</a>
+						{{#markdown}}
+							<a class="uk-button uk-button-default uk-button-text">Preview</a>
+						{{/markdown}}
+							<a href="#" class="uk-label">{{type}}</a>
+						{{#markdown}}
+							<div uk-drop="mode: click; pos: bottom-justify; animation: uk-animation-slide-top-small; duration: 800">
+								<div class="uk-card uk-card-body uk-card-default">
+									{{{.}}}
+								</div>
+							</div>
+						{{/markdown}}
 					</p>
 				</div>
 			</div>
