@@ -21,6 +21,7 @@ const password = argv.password || ''
 const enableClose = !(argv.close || false)
 const enableUpload = fs.existsSync(`${dirRoot}/uploads`)
 const port = argv.port || process.env.PORT || process.env.port || 3000
+const dark = argv.dark || false
 var lastFolders = []
 
 const clearNameFile = (name) => {
@@ -144,11 +145,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'handlebars')
 app.set('trust proxy', 1)
 
-app.use(cookieSession({
+app.use(
+	cookieSession({
 		name: 'session',
 		keys: ['FileXShared', 'filexshared']
-	}))
-	//app.enable('view cache')
+	})
+)
+if (!argv.dev) {
+	app.enable('view cache')
+}
+
 
 app.use((req, res, next) => {
 	//console.log(`[:]Path: ${req.path}`)
@@ -172,6 +178,7 @@ app.use('/static', express.static(dirRoot))
 app.get(['/about', '/faq', '/help'], async(req, res) => {
 	console.log('[!] Open help')
 	return res.render('help', {
+		dark: dark,
 		lastFolders: req.session.lastFolders,
 		enableUpload: enableUpload,
 		enableClose: enableClose,
@@ -206,6 +213,7 @@ app.get(['/about', '/faq', '/help'], async(req, res) => {
 app.get('/close', async(req, res) => {
 	if (!enableClose) {
 		return res.render('alert', {
+			dark: dark,
 			lastFolders: req.session.lastFolders,
 			enableUpload: enableUpload,
 			enableClose: enableClose,
@@ -214,6 +222,7 @@ app.get('/close', async(req, res) => {
 	}
 	console.log('[!] Shutdown Server...')
 	res.render('alert', {
+		dark: dark,
 		lastFolders: req.session.lastFolders,
 		enableUpload: enableUpload,
 		enableClose: enableClose,
@@ -229,6 +238,7 @@ app.get('/close', async(req, res) => {
 app.get('/login', (req, res) => {
 	console.log('[!] Login user')
 	return res.render('login', {
+		dark: dark,
 		lastFolders: req.session.lastFolders,
 		enableUpload: enableUpload,
 		enableClose: enableClose
@@ -240,6 +250,7 @@ app.get('/singout', (req, res) => {
 	req.session.password = ''
 	req.session.lastFolders = []
 	return res.render('singout', {
+		dark: dark,
 		lastFolders: req.session.lastFolders,
 		enableUpload: enableUpload,
 		enableClose: enableClose,
@@ -271,6 +282,7 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async(req, res)
 	var data = await getDirFiles(dir)
 	if (!data) {
 		return res.render('alert', {
+			dark: dark,
 			lastFolders: req.session.lastFolders,
 			enableUpload: enableUpload,
 			enableClose: enableClose,
@@ -279,6 +291,7 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async(req, res)
 	}
 
 	return res.render('files', {
+		dark: dark,
 		upload: true,
 		lastFolders: req.session.lastFolders,
 		enableUpload: enableUpload,

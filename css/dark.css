@@ -1,0 +1,37 @@
+html {
+	background: #45484c;
+}
+
+.uk-card-default {
+	background: #3d4043;
+	color: #fff;
+}
+
+.uk-card-default .uk-card-title {
+	color: #fff;
+}
+
+.uk-button-text {
+	color: #fff;
+}
+
+.uk-button-text:hover {
+	color: #fff;
+}
+
+.uk-nav-default>li>a {
+	color: #fff;
+}
+
+.uk-nav-default>li>a:hover {
+	color: #aaebff;
+}
+
+.uk-nav-default .uk-nav-divider {
+	border-top: 1px solid #9b9da2;
+}
+
+.menu {
+	margin-top: 2%;
+	border-radius: 3px;
+}

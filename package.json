@@ -1,55 +1,66 @@
 {
-  "name": "filexshared",
-  "main": "index.js",
-  "version": "2.2.0",
-  "description": "Share files Fast, Easy and Secure, to world or on your local network.",
-  "author": {
-    "name": "Tiago Danin",
-    "email": "TiagoDanin@outlook.com",
-    "url": "https://TiagoDanin.github.io"
-  },
-  "license": "MIT",
-  "keywords": [
-    "file",
-    "shared",
-    "share",
-    "web",
-    "browser",
-    "chrome",
-    "play",
-    "server",
-    "network"
-  ],
-  "scripts": {},
-  "private": false,
-  "repository": "https://github.com/TiagoDanin/FileXShared.git",
-  "homepage": "https://TiagoDanin.github.io/FileXShared",
-  "bugs": "https://github.com/TiagoDanin/FileXShared/issues",
-  "github": {
-    "name": "FileXShared",
-    "owner": "TiagoDanin"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "css",
-    "index.js",
-    "package.json",
-    "views"
-  ],
-  "devDependencies": {},
-  "dependencies": {
-    "cookie-session": "2.0.0-beta.3",
-    "express": "4.16.4",
-    "express-handlebars": "3.0.0",
-    "filenamify": "2.1.0",
-    "hubdown": "2.1.0",
-    "mime": "2.4.0",
-    "minimist": "1.2.0",
-    "multer": "1.4.1",
-    "uikit": "3.0.0-rc.25"
-  },
-  "bin": {
-    "filexshared": "index.js"
-  }
+	"name": "filexshared",
+	"main": "index.js",
+	"bin": {
+		"filexshared": "index.js"
+	},
+	"preferGlobal": true,
+	"version": "2.2.0",
+	"description": "Share files Fast, Easy and Secure, to world or on your local network.",
+	"author": {
+		"name": "Tiago Danin",
+		"email": "TiagoDanin@outlook.com",
+		"url": "https://TiagoDanin.github.io"
+	},
+	"license": "MIT",
+	"keywords": [
+		"file",
+		"shared",
+		"share",
+		"web",
+		"browser",
+		"chrome",
+		"play",
+		"server",
+		"network"
+	],
+	"scripts": {
+		"start": "node index.js",
+		"dev": "node index.js --dev",
+		"test": "echo \"Nice Test :)\""
+	},
+	"engines": {},
+	"private": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TiagoDanin/FileXShared.git"
+	},
+	"homepage": "https://TiagoDanin.github.io/FileXShared",
+	"bugs": {
+		"url": "https://github.com/TiagoDanin/FileXShared/issues"
+	},
+	"github": {
+		"name": "FileXShared",
+		"owner": "TiagoDanin"
+	},
+	"files": [
+		"LICENSE",
+		"README.md",
+		"css",
+		"index.js",
+		"package.json",
+		"views"
+	],
+	"dependencies": {
+		"cookie-session": "2.0.0-beta.3",
+		"express": "4.16.4",
+		"express-handlebars": "3.0.0",
+		"filenamify": "2.1.0",
+		"hubdown": "2.1.0",
+		"mime": "2.4.0",
+		"minimist": "1.2.0",
+		"multer": "1.4.1",
+		"uikit": "3.0.0-rc.25"
+	},
+	"devDependencies": {}
 }
