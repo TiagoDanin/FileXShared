@@ -12,13 +12,9 @@ const exphbs = require('express-handlebars')
 const cookieSession = require('cookie-session')
 const argv = require('minimist')(process.argv)
 
-if (argv.help) {
-	console.log('Usage: filexshared --password=012345 --close --port=3000')
-}
-
 const dirRoot = `${process.cwd()}/`
 const password = argv.password || ''
-const enableClose = !(argv.close || false)
+const enableClose = !(argv['disable-close'] || false)
 const enableUpload = fs.existsSync(`${dirRoot}/uploads`)
 const port = argv.port || process.env.PORT || process.env.port || 3000
 const dark = argv.dark || false
@@ -187,13 +183,17 @@ app.get(['/about', '/faq', '/help'], async(req, res) => {
 			tags: ['Server', 'Client'],
 			text: 'Create a folder with the name "uploads". (Need reload server)'
 		}, {
+			title: 'Enable Dark Theme',
+			tags: ['Server', 'Client'],
+			text: 'Start with the command "filexshared --dark"'
+		}, {
 			title: 'Enable Password',
 			tags: ['Server'],
 			text: 'Start with the command "filexshared --password=012345"'
 		}, {
 			title: 'Disable Option "Close Server"',
 			tags: ['Server'],
-			text: 'Start with the command "filexshared --close"'
+			text: 'Start with the command "filexshared --disable-close"'
 		}, {
 			title: 'Sign Out',
 			tags: ['Client'],
