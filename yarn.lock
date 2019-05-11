@@ -249,9 +249,10 @@ express-handlebars@3.0.2:
     object.assign "^4.1.0"
     promise "^8.0.2"
 
-express@4.16.4:
+express@^4.16.4:
   version "4.16.4"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.4.tgz#fddef61926109e24c515ea97fd2f1bdbf62df12e"
+  integrity sha512-j12Uuyb4FMrd/qQAm6uCHAkPtO8FDTRJZBDd5D2KOL2eLaz1yUNdUB/NOIyq0iU4q4cFarsUCrnFDPBcnksuOg==
   dependencies:
     accepts "~1.3.5"
     array-flatten "1.1.1"
@@ -660,7 +661,7 @@ minimist@0.0.8:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
   integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
 
-minimist@1.2.0:
+minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
   integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
@@ -1098,10 +1099,10 @@ uglify-js@^3.1.4:
     commander "~2.20.0"
     source-map "~0.6.1"
 
-uikit@3.0.0-rc.25:
-  version "3.0.0-rc.25"
-  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.0.0-rc.25.tgz#81d4ed1995c9cc8bdba2cf1cf83dc6d7c69031a8"
-  integrity sha512-3RdOdn3kr4N8huG9rpGMg8QenD77/eKsR3nsja7/gIl8MLTlZC6K/R/TCcwpb+VY5duOH9bS5vz+3Gd5XXJ53A==
+uikit@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.1.4.tgz#bb0939555c5038bd056ce3c2169715fb1103ce10"
+  integrity sha512-XGtlKlQXeNoQJi9wyff6DCkeX0P5/wdZw7LOenH7a5AOTRfUZDhTGX9uSCvRBroYBIKj6Eq2fe2efw2d1/rdHg==
 
 unherit@^1.0.4:
   version "1.1.1"

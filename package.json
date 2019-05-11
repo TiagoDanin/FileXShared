@@ -60,7 +60,7 @@
 		"mime": "2.4.2",
 		"minimist": "^1.2.0",
 		"multer": "1.4.1",
-		"uikit": "^3.0.0-rc.25"
+		"uikit": "^3.1.4"
 	},
 	"devDependencies": {}
 }
