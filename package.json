@@ -8,28 +8,30 @@
 	"version": "2.3.1",
 	"description": "Share files Fast, Easy and Secure, to world or on your local network.",
 	"author": {
-		"name": "Tiago Danin",
 		"email": "TiagoDanin@outlook.com",
+		"name": "Tiago Danin",
 		"url": "https://TiagoDanin.github.io"
 	},
 	"license": "MIT",
 	"keywords": [
-		"file",
-		"shared",
-		"share",
-		"web",
-		"browser",
-		"chrome",
-		"play",
+		"download",
+		"files",
+		"ftp",
+		"handlebars",
+		"manager",
 		"server",
-		"network"
+		"share",
+		"uikit",
+		"upload"
 	],
 	"scripts": {
 		"start": "node index.js",
 		"dev": "node index.js --dev",
-		"test": "echo \"Nice Test :)\""
+		"test": "xo"
 	},
-	"engines": {},
+	"engines": {
+		"node": ">=8"
+	},
 	"private": false,
 	"repository": {
 		"type": "git",
@@ -52,6 +54,7 @@
 		"views"
 	],
 	"dependencies": {
+		"body-parser": "^1.19.0",
 		"cookie-session": "2.0.0-beta.3",
 		"express": "^4.17.1",
 		"express-handlebars": "3.1.0",
@@ -60,7 +63,20 @@
 		"mime": "2.4.3",
 		"minimist": "^1.2.0",
 		"multer": "1.4.1",
+		"path-exists": "^4.0.0",
 		"uikit": "^3.1.5"
 	},
-	"devDependencies": {}
+	"devDependencies": {
+		"xo": "0.24.0"
+	},
+	"xo": {
+		"rules": {
+			"quote-props": "warn",
+			"eqeqeq": "warn",
+			"array-callback-return": "warn",
+			"require-atomic-updates": "warn",
+			"no-else-return": "off"
+		},
+		"semicolon": false
+	}
 }

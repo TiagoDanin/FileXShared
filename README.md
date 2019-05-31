@@ -1,6 +1,6 @@
 # FileXShared
 
-[![Downloads](https://img.shields.io/npm/dt/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) [![Version](https://img.shields.io/npm/v/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) 
+[![Travis](https://img.shields.io/travis/TiagoDanin/FileXShared.svg?branch=master&style=flat-square)](https://travis-ci.org/TiagoDanin/FileXShared) [![Downloads](https://img.shields.io/npm/dt/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) [![Node](https://img.shields.io/node/v/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) [![Version](https://img.shields.io/npm/v/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) [![XO code style](https://img.shields.io/badge/code%20style-XO-red.svg?style=flat-square)](https://github.com/xojs/xo) 
 
 Share files Fast, Easy and Secure, to world or on your local network.
 
@@ -33,8 +33,20 @@ filexshared --password=1234567890
 filexshared --disable-close
 ```
 
+## Tests
+
+To run the test suite, first install the dependencies, then run `test`:
+
+```sh
+# NPM
+npm test
+# Or Using Yarn
+yarn test
+```
+
 ## Dependencies
 
+- [body-parser](https://ghub.io/body-parser): Node.js body parsing middleware
 - [cookie-session](https://ghub.io/cookie-session): cookie session middleware
 - [express](https://ghub.io/express): Fast, unopinionated, minimalist web framework
 - [express-handlebars](https://ghub.io/express-handlebars): A Handlebars view engine for Express which doesn&#x27;t suck.
@@ -43,7 +55,12 @@ filexshared --disable-close
 - [mime](https://ghub.io/mime): A comprehensive library for mime-type mapping
 - [minimist](https://ghub.io/minimist): parse argument options
 - [multer](https://ghub.io/multer): Middleware for handling &#x60;multipart/form-data&#x60;.
+- [path-exists](https://ghub.io/path-exists): Check if a path exists
 - [uikit](https://ghub.io/uikit): UIkit is a lightweight and modular front-end framework for developing fast and powerful web interfaces.
+
+## Dev Dependencies
+
+- [xo](https://ghub.io/xo): JavaScript happiness style linter ❤️
 
 ## Contributors
 

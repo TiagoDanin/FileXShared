@@ -11,56 +11,58 @@ const filenamify = require('filenamify')
 const hubdown = require('hubdown')
 const mime = require('mime')
 const multer = require('multer')
+const pathExists = require('path-exists').sync
 
 const dirRoot = process.cwd()
 const password = argv.password || ''
 const enableClose = !(argv['disable-close'] || false)
-const enableUpload = fs.existsSync(path.join(dirRoot, 'uploads'))
+const enableUpload = pathExists(path.join(dirRoot, 'uploads'))
 const port = argv.port || process.env.PORT || process.env.port || 3000
 const dark = argv.dark || false
-var lastFolders = []
+let lastFolders = []
 
-const clearNameFile = (name) => {
+const clearNameFile = name => {
 	return filenamify(path.basename(name), {
 		replacement: '-'
 	})
 }
 
-const getDir = (dir) => {
-	if (fs.existsSync(path.join(dirRoot, dir))) {
+const getDir = dir => {
+	if (pathExists(path.join(dirRoot, dir))) {
 		return fs.readdirSync(path.join(dirRoot, dir))
 	}
 
 	return []
 }
 
-const loadFile = (file) => {
-	if (fs.existsSync(file)) {
+const loadFile = file => {
+	if (pathExists(file)) {
 		return fs.readFileSync(file).toString()
 	}
 
 	return false
 }
 
-const markdwonToHtml = async(file) => {
-	if (fs.existsSync(file)) {
-		return await hubdown(
-				fs.readFileSync(file).toString()
-			)
-			.then((res) => res.content)
-			.catch(() => false)
+const markdwonToHtml = async file => {
+	if (pathExists(file)) {
+		const content = await hubdown(
+			fs.readFileSync(file).toString()
+		).then(res => res.content).catch(() => false)
+
+		return content
 	}
+
 	return false
 }
 
-const getDirFiles = async(dir) => {
-	let data = {
+const getDirFiles = async dir => {
+	const data = {
 		files: [],
 		dir: []
 	}
-	let dirs = getDir(dir)
+	const dirs = getDir(dir)
 
-	dirs.map((file) => {
+	dirs.map(file => {
 		if (fs.statSync(path.join(dirRoot, dir, file)).isDirectory()) {
 			data.dir.push(path.join(dir, file))
 		} else {
@@ -74,9 +76,9 @@ const getDirFiles = async(dir) => {
 		return false
 	}
 
-	data.files = await Promise.all(data.files.map(async(name) => {
-		var f = {}
-		f.name = name != '' ? name.replace(dir, '') : name
+	data.files = await Promise.all(data.files.map(async name => {
+		const f = {}
+		f.name = name === '' ? name : name.replace(dir, '')
 		f.file = name
 		f.type = mime.getType(path.basename(name)) || 'none'
 		f.video = f.type.startsWith('video/') ? {
@@ -96,7 +98,7 @@ const getDirFiles = async(dir) => {
 	return data
 }
 
-const optionsSend = (file) => {
+const optionsSend = file => {
 	return {
 		root: dirRoot,
 		dotfiles: 'deny',
@@ -112,11 +114,13 @@ const checkPassword = (req, res) => {
 	if (password == '') {
 		return true
 	}
+
 	const passwordInput = req.session.password
 	if (passwordInput != password) {
 		res.redirect('/login')
 		return false
 	}
+
 	return true
 }
 
@@ -130,7 +134,7 @@ const storage = multer.diskStorage({
 	}
 })
 const upload = multer({
-	storage: storage
+	storage
 })
 
 app.engine('handlebars', exphbs({
@@ -153,9 +157,8 @@ if (!argv.dev) {
 	app.enable('view cache')
 }
 
-
 app.use((req, res, next) => {
-	//console.log(`[:]Path: ${req.path}`)
+	// Console.log(`[:]Path: ${req.path}`)
 	if (
 		req.path != '/login' &&
 		!(req.path.startsWith('/css') || req.path.startsWith('/uikit')) &&
@@ -164,6 +167,7 @@ app.use((req, res, next) => {
 		console.log('[!] Open page of login')
 		return false
 	}
+
 	return next()
 })
 app.use('/uikit', express.static(`${__dirname}/node_modules/uikit/dist/`))
@@ -173,13 +177,13 @@ app.use(bodyParser.urlencoded({
 }))
 app.use('/static', express.static(dirRoot))
 
-app.get(['/about', '/faq', '/help'], async(req, res) => {
+app.get(['/about', '/faq', '/help'], async (req, res) => {
 	console.log('[!] Open help')
 	return res.render('help', {
-		dark: dark,
+		dark,
 		lastFolders: req.session.lastFolders,
-		enableUpload: enableUpload,
-		enableClose: enableClose,
+		enableUpload,
+		enableClose,
 		list: [{
 			title: 'Enable Upload',
 			tags: ['Server', 'Client'],
@@ -212,27 +216,28 @@ app.get(['/about', '/faq', '/help'], async(req, res) => {
 	})
 })
 
-app.get('/close', async(req, res) => {
+app.get('/close', async (req, res) => {
 	if (!enableClose) {
 		return res.render('alert', {
-			dark: dark,
+			dark,
 			lastFolders: req.session.lastFolders,
-			enableUpload: enableUpload,
-			enableClose: enableClose,
+			enableUpload,
+			enableClose,
 			text: 'Disable!'
 		})
 	}
+
 	console.log('[!] Shutdown Server...')
 	res.render('alert', {
-		dark: dark,
+		dark,
 		lastFolders: req.session.lastFolders,
-		enableUpload: enableUpload,
-		enableClose: enableClose,
+		enableUpload,
+		enableClose,
 		text: 'Shutdown Server...'
 	})
-	await new Promise((resolve) => setTimeout(
+	await new Promise(resolve => setTimeout(
 		resolve,
-		(5000) //5s
+		(5000) // 5s
 	))
 	return process.exit()
 })
@@ -240,10 +245,10 @@ app.get('/close', async(req, res) => {
 app.get('/login', (req, res) => {
 	console.log('[!] Login user')
 	return res.render('login', {
-		dark: dark,
+		dark,
 		lastFolders: req.session.lastFolders,
-		enableUpload: enableUpload,
-		enableClose: enableClose
+		enableUpload,
+		enableClose
 	})
 })
 
@@ -252,21 +257,22 @@ app.get('/singout', (req, res) => {
 	req.session.password = ''
 	req.session.lastFolders = []
 	return res.render('singout', {
-		dark: dark,
+		dark,
 		lastFolders: req.session.lastFolders,
-		enableUpload: enableUpload,
-		enableClose: enableClose,
+		enableUpload,
+		enableClose,
 		text: 'Removing database...'
 	})
 })
 
-app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async(req, res) => {
-	var dir = ''
+app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async (req, res) => {
+	let dir = ''
 	if (req.params.dir) {
 		dir = `${req.params.dir}/`
 	} else if (req.originalUrl.startsWith('/files/')) {
 		dir = `${req.originalUrl.replace('/files/', '')}/`
 	}
+
 	dir = decodeURIComponent(dir)
 	console.log(`[!] Open Folder: ${dir == '' ? 'root' : dir}`)
 
@@ -274,30 +280,33 @@ app.get(['/', '/files/:dir', '/files/*', '/files', '/download'], async(req, res)
 		if (lastFolders.length <= 0) {
 			lastFolders = req.session.lastFolders || []
 		}
+
 		if (lastFolders.length >= 3) {
 			lastFolders = [...lastFolders.splice(1, 3), dir.replace()]
 		} else {
 			lastFolders.push(dir.replace())
 		}
+
 		req.session.lastFolders = lastFolders
 	}
-	var data = await getDirFiles(dir)
+
+	const data = await getDirFiles(dir)
 	if (!data) {
 		return res.render('alert', {
-			dark: dark,
+			dark,
 			lastFolders: req.session.lastFolders,
-			enableUpload: enableUpload,
-			enableClose: enableClose,
+			enableUpload,
+			enableClose,
 			text: 'No has files or folders!.'
 		})
 	}
 
 	return res.render('files', {
-		dark: dark,
+		dark,
 		upload: true,
 		lastFolders: req.session.lastFolders,
-		enableUpload: enableUpload,
-		enableClose: enableClose,
+		enableUpload,
+		enableClose,
 		...data
 	})
 })
@@ -308,15 +317,17 @@ app.post('/login', (req, res) => {
 	if (checkPassword(req, res)) {
 		return res.redirect('/files')
 	}
+
 	return res.redirect('/login')
 })
 
 app.post('/download', (req, res) => {
-	const file = req.body.file
+	const {file} = req.body
 	if (!file) {
-		return res.send("Falid!")
+		return res.send('Falid!')
 	}
-	return res.sendFile(file, optionsSend(file), (err) => {
+
+	return res.sendFile(file, optionsSend(file), err => {
 		if (err) {
 			console.log(`[-] Error: ${err}`)
 		} else {
@@ -329,7 +340,8 @@ app.post('/upload', upload.any(), (req, res) => {
 	if (!enableUpload) {
 		return res.send('Upload disabled!')
 	}
-	req.files.map((e) => {
+
+	req.files.map(e => {
 		console.log(`[+] Receive: ${e.originalname}`)
 	})
 	return res.send('Done!')
