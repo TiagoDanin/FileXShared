@@ -1,8 +1,10 @@
 # FileXShared
 
-[![Version](https://img.shields.io/npm/v/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared)[![Downloads](https://img.shields.io/npm/dt/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared)
+[![Downloads](https://img.shields.io/npm/dt/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) [![Version](https://img.shields.io/npm/v/filexshared.svg?style=flat-square)](https://npmjs.org/package/filexshared) 
 
 Share files Fast, Easy and Secure, to world or on your local network.
+
+![](media/screenshot.png)
 
 ## Installation
 
