@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const path = require('path')
+const path = require('path').posix
+const argv = require('minimist')(process.argv)
+const bodyParser = require('body-parser')
+const cookieSession = require('cookie-session')
+const exphbs = require('express-handlebars')
+const express = require('express')
+const filenamify = require('filenamify')
+const hubdown = require('hubdown')
 const mime = require('mime')
 const multer = require('multer')
-const express = require('express')
-const hubdown = require('hubdown')
-const filenamify = require('filenamify')
-const bodyParser = require('body-parser')
-const exphbs = require('express-handlebars')
-const cookieSession = require('cookie-session')
-const argv = require('minimist')(process.argv)
 
-const dirRoot = `${process.cwd()}/`
+const dirRoot = process.cwd()
 const password = argv.password || ''
 const enableClose = !(argv['disable-close'] || false)
-const enableUpload = fs.existsSync(`${dirRoot}/uploads`)
+const enableUpload = fs.existsSync(path.join(dirRoot, 'uploads'))
 const port = argv.port || process.env.PORT || process.env.port || 3000
 const dark = argv.dark || false
 var lastFolders = []
@@ -27,9 +27,10 @@ const clearNameFile = (name) => {
 }
 
 const getDir = (dir) => {
-	if (fs.existsSync(`${dirRoot}${dir}`)) {
-		return fs.readdirSync(`${dirRoot}${dir}`)
+	if (fs.existsSync(path.join(dirRoot, dir))) {
+		return fs.readdirSync(path.join(dirRoot, dir))
 	}
+
 	return []
 }
 
@@ -37,6 +38,7 @@ const loadFile = (file) => {
 	if (fs.existsSync(file)) {
 		return fs.readFileSync(file).toString()
 	}
+
 	return false
 }
 
@@ -59,10 +61,10 @@ const getDirFiles = async(dir) => {
 	let dirs = getDir(dir)
 
 	dirs.map((file) => {
-		if (fs.statSync(`${dirRoot}${dir}${file}`).isDirectory()) {
-			data.dir.push(`${dir}${file}`)
+		if (fs.statSync(path.join(dirRoot, dir, file)).isDirectory()) {
+			data.dir.push(path.join(dir, file))
 		} else {
-			data.files.push(`${dir}${file}`)
+			data.files.push(path.join(dir, file))
 		}
 	})
 	data.files.sort()
@@ -121,7 +123,7 @@ const checkPassword = (req, res) => {
 const app = express()
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, `${dirRoot}uploads/`)
+		cb(null, path.join(dirRoot, 'uploads'))
 	},
 	filename: (req, file, cb) => {
 		cb(null, `${clearNameFile(file.originalname)}`)
