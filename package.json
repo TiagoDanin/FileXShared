@@ -5,7 +5,7 @@
 		"filexshared": "index.js"
 	},
 	"preferGlobal": true,
-	"version": "2.3.0",
+	"version": "2.3.1",
 	"description": "Share files Fast, Easy and Secure, to world or on your local network.",
 	"author": {
 		"name": "Tiago Danin",
