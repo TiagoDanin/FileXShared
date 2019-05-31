@@ -170,8 +170,8 @@ app.use((req, res, next) => {
 
 	return next()
 })
-app.use('/uikit', express.static(`${__dirname}/node_modules/uikit/dist/`))
-app.use('/css', express.static(`${__dirname}/css/`))
+app.use('/uikit', express.static(path.join(__dirname, 'node_modules', 'uikit', 'dist')))
+app.use('/css', express.static(path.join(__dirname, 'css')))
 app.use(bodyParser.urlencoded({
 	extended: false
 }))
