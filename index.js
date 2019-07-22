@@ -12,6 +12,7 @@ const hubdown = require('hubdown')
 const mime = require('mime')
 const multer = require('multer')
 const pathExists = require('path-exists').sync
+const download = require('download')
 
 const dirRoot = process.cwd()
 const password = argv.password || ''
@@ -170,7 +171,8 @@ app.use((req, res, next) => {
 
 	return next()
 })
-app.use('/uikit', express.static(path.join(__dirname, 'node_modules', 'uikit', 'dist')))
+
+app.use('/uikit', express.static(path.join(path.dirname(require.resolve('uikit')), '..')))
 app.use('/css', express.static(path.join(__dirname, 'css')))
 app.use(bodyParser.urlencoded({
 	extended: false
