@@ -12,11 +12,14 @@ const hubdown = require('hubdown')
 const mime = require('mime')
 const multer = require('multer')
 const pathExists = require('path-exists').sync
+const download = require('download')
+const filenamifyUrl = require('filenamify-url')
 
 const dirRoot = process.cwd()
 const password = argv.password || ''
 const enableClose = !(argv['disable-close'] || false)
-const enableUpload = pathExists(path.join(dirRoot, 'uploads'))
+const uploadPath = path.join(dirRoot, 'uploads')
+const enableUpload = pathExists(uploadPath)
 const port = argv.port || process.env.PORT || process.env.port || 3000
 const dark = argv.dark || false
 let lastFolders = []
@@ -127,7 +130,7 @@ const checkPassword = (req, res) => {
 const app = express()
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.join(dirRoot, 'uploads'))
+		cb(null, uploadPath)
 	},
 	filename: (req, file, cb) => {
 		cb(null, `${clearNameFile(file.originalname)}`)
@@ -170,7 +173,8 @@ app.use((req, res, next) => {
 
 	return next()
 })
-app.use('/uikit', express.static(path.join(__dirname, 'node_modules', 'uikit', 'dist')))
+
+app.use('/uikit', express.static(path.join(path.dirname(require.resolve('uikit')), '..')))
 app.use('/css', express.static(path.join(__dirname, 'css')))
 app.use(bodyParser.urlencoded({
 	extended: false
@@ -345,6 +349,27 @@ app.post('/upload', upload.any(), (req, res) => {
 		console.log(`[+] Receive: ${e.originalname}`)
 	})
 	return res.send('Done!')
+})
+
+app.post('/upload-web', async (req, res) => {
+	if (!enableUpload) {
+		return res.send('Upload disabled!')
+	}
+
+	const {url} = req.body
+	return download(url).then(data => {
+		fs.writeFileSync(path.join(uploadPath, filenamifyUrl(url)), data)
+		res.redirect('/files/uploads')
+	}).catch(error => {
+		console.log('[!] Error', error)
+		res.render('alert', {
+			dark,
+			lastFolders: req.session.lastFolders,
+			enableUpload,
+			enableClose,
+			text: `Error: ${error}`
+		})
+	})
 })
 
 app.listen(app.get('port'), () => {
