@@ -45,6 +45,18 @@
 								<input type="file" multiple>
 								<span class="uk-link">selecting one</span>
 							</div>
+							<li class="uk-nav-divider"></li>
+							<form uk-form-custom action="/upload-web" method="post">
+								<span uk-icon="icon: world"></span>
+								<span class="uk-text-middle">Attach file from website</span>
+								<div class="uk-margin">
+									<div class="uk-inline">
+										<a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: link"></a>
+										<input class="uk-input" type="text" id="url" type="url" name="url" value="https://">
+									</div>
+									<input class="uk-button uk-margin" type="submit" value="Download from url" >
+								</div>
+							</form>
 						</div>
 					{{/enableUpload}}
 					<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
