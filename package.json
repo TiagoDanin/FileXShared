@@ -65,7 +65,7 @@
 		"minimist": "^1.2.0",
 		"multer": "^1.4.2",
 		"path-exists": "^4.0.0",
-		"uikit": "^3.3.1"
+		"uikit": "^3.3.2"
 	},
 	"devDependencies": {
 		"xo": "0.26.1"
