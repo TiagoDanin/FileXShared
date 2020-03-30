@@ -68,7 +68,7 @@
 		"uikit": "^3.3.6"
 	},
 	"devDependencies": {
-		"xo": "0.28.0"
+		"xo": "0.28.1"
 	},
 	"xo": {
 		"rules": {
