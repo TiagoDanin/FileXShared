@@ -2233,6 +2233,11 @@ highlight.js@~9.15.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.15.9.tgz#865257da1dbb4a58c4552d46c4b3854f77f0e6d5"
   integrity sha512-M0zZvfLr5p0keDMCAhNBp03XJbKBxUx5AfyfufMdFMEP4N/Xj6dh0IqC75ys7BAzceR34NgcvXjupRVaHBPPVQ==
 
+highlightjs-graphql@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/highlightjs-graphql/-/highlightjs-graphql-1.0.1.tgz#e6e3a69585348a14492386260bb2c0c54c6a2e7b"
+  integrity sha512-g5kt/orsUJTjIt5pgs/uvi78kXndpCtYwzE7H3D0d07r3ETs9oHSZHD0EGaRPndiQ/4EYXt12rnsDkljn3ilAA==
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -2277,13 +2282,14 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-hubdown@2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/hubdown/-/hubdown-2.4.3.tgz#0ee0e95b1bfa8bf61ff72d3b802c93873047b7de"
-  integrity sha512-6VdtsplmrqFhOLcvukejFEZG2R1LvU6t80IUJ0GtHvsnW8RHzDGSJ3amcWfuHpRQXZFDWgipFKqTvIus0KD7zQ==
+hubdown@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/hubdown/-/hubdown-2.5.0.tgz#391f5496bf60c9a0aad7fb4ab2e6d885dd37e77a"
+  integrity sha512-HuF5774apmrskvXmOwOmBADqSpziJV7QBBp6S5F+Fs09RL49EEz6qh2sPHUEKERN/atjnlYbQI+SLUFcz2cZ2Q==
   dependencies:
     gray-matter "^3.0.7"
     hasha "^3.0.0"
+    highlightjs-graphql "^1.0.1"
     json-stable-stringify "^1.0.1"
     rehype-autolink-headings "^2.0.5"
     rehype-highlight "^3.0.0"
