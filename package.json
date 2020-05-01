@@ -58,7 +58,7 @@
 		"body-parser": "^1.19.0",
 		"cookie-session": "^2.0.0-rc.1",
 		"express": "^4.17.1",
-		"express-handlebars": "4.0.3",
+		"express-handlebars": "4.0.4",
 		"filenamify": "^4.1.0",
 		"hubdown": "2.5.0",
 		"mime": "^2.4.4",
