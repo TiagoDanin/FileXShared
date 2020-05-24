@@ -2287,10 +2287,10 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-hubdown@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/hubdown/-/hubdown-2.5.0.tgz#391f5496bf60c9a0aad7fb4ab2e6d885dd37e77a"
-  integrity sha512-HuF5774apmrskvXmOwOmBADqSpziJV7QBBp6S5F+Fs09RL49EEz6qh2sPHUEKERN/atjnlYbQI+SLUFcz2cZ2Q==
+hubdown@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/hubdown/-/hubdown-2.6.0.tgz#5f336c4e9d0d88c48a1d4b0e69224e028bf6f0ce"
+  integrity sha512-gqC4TfGK/gEuAElYRZh4HUEz+TCM4BZ6NQZkNOvWurhQu+PwaF6PVPPTb9DN1h1DUn/kEsFL37XsUJPnJWae+Q==
   dependencies:
     gray-matter "^3.0.7"
     hasha "^3.0.0"
