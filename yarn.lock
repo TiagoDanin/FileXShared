@@ -318,11 +318,6 @@ arrify@^2.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
-asap@~2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
-  integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
-
 asn1.js@^4.0.0:
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-4.10.1.tgz#b9c2bf5805f1e64aadeed6df3a2bfafb5a73f5a0"
@@ -1615,16 +1610,14 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-express-handlebars@4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/express-handlebars/-/express-handlebars-4.0.4.tgz#b42b6bc09f4c7fe35f4afbda7aedadd6c2527fae"
-  integrity sha512-WxbQorVc7V9ORzp9YpG3fLAzrfIrKcScSezuFxTZRFJSx/P2f7QJ9ZyADV8cyPuomyzUxAJnw6t8dnriLfBNvg==
+express-handlebars@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/express-handlebars/-/express-handlebars-5.0.0.tgz#d910c5d02d9bb16eb10b3f32036969526e277860"
+  integrity sha512-06h+8wV4HATi746CAocnUIUHbDcB+Qj1Dflyzod6MMO6UGT8rBhkdGzxhoatvIqB7CyUAaRXuu5SvmOlwRUGsQ==
   dependencies:
     glob "^7.1.6"
     graceful-fs "^4.2.4"
     handlebars "^4.7.6"
-    object.assign "^4.1.0"
-    promise "^8.1.0"
 
 express@^4.17.1:
   version "4.17.1"
@@ -3792,13 +3785,6 @@ progress@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
-
-promise@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
-  integrity sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
-  dependencies:
-    asap "~2.0.6"
 
 property-information@^5.0.0, property-information@^5.0.1, property-information@^5.3.0:
   version "5.3.0"
