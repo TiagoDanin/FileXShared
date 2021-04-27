@@ -1826,14 +1826,14 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-express-handlebars@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/express-handlebars/-/express-handlebars-5.1.0.tgz#b587150665ce9889c5a56e2bb5e8205fb8605f31"
-  integrity sha512-EHu7Lz1q3OOPSv1wyxN0pOMhAcljx0UUACrFAnSgoBdKc6YCBFl7qW3w6TQZ8d6kWA14xAH9pLMsR0N9vJ3iGw==
+express-handlebars@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/express-handlebars/-/express-handlebars-5.3.0.tgz#484e43029d1a899fe47874b9a40d67e541e9ca70"
+  integrity sha512-rC9uWbaC3m1jjgVrVk/bHhjO9irKoQbWGUtYBY03amn6Y/SGZ+yxINyJMZ/fHbNaP0APi+QvwEuHVx5ca/2XjQ==
   dependencies:
     glob "^7.1.6"
-    graceful-fs "^4.2.4"
-    handlebars "^4.7.6"
+    graceful-fs "^4.2.6"
+    handlebars "^4.7.7"
 
 express@^4.17.1:
   version "4.17.1"
@@ -2284,10 +2284,10 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-graceful-fs@^4.2.4:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
-  integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
+graceful-fs@^4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.6.tgz#ff040b2b0853b23c3d31027523706f1885d76bee"
+  integrity sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==
 
 gray-matter@^3.0.7:
   version "3.1.1"
@@ -2298,10 +2298,10 @@ gray-matter@^3.0.7:
     kind-of "^5.0.2"
     strip-bom-string "^1.0.0"
 
-handlebars@^4.7.6:
-  version "4.7.6"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.6.tgz#d4c05c1baf90e9945f77aa68a7a219aa4a7df74e"
-  integrity sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
+handlebars@^4.7.7:
+  version "4.7.7"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
+  integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
   dependencies:
     minimist "^1.2.5"
     neo-async "^2.6.0"
