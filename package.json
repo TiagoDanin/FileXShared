@@ -30,7 +30,7 @@
 		"test": "xo"
 	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=v16.17.1"
 	},
 	"private": false,
 	"repository": {
