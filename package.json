@@ -62,7 +62,7 @@
 		"filenamify": "^4.3.0",
 		"hubdown": "2.6.0",
 		"mime": "^2.6.0",
-		"minimist": "^1.2.5",
+		"minimist": "^1.2.8",
 		"multer": "^1.4.4",
 		"path-exists": "^4.0.0",
 		"uikit": "^3.6.22"
