@@ -55,7 +55,7 @@
 		"media"
 	],
 	"dependencies": {
-		"body-parser": "^1.19.2",
+		"body-parser": "^1.20.2",
 		"cookie-session": "^2.0.0",
 		"express": "^4.17.1",
 		"express-handlebars": "5.3.5",
