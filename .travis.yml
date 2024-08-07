@@ -2,5 +2,5 @@ os: linux
 language: node_js
 node_js:
   - '10'
-  - '9'
+  - '9.11.2'
   - '8'
